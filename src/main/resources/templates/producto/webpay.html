@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Redirigiendo a Webpay...</title>
+</head>
+<body onload="document.webpayForm.submit();">
+    <form name="webpayForm" method="POST" action="https://webpay3gint.transbank.cl/webpayserver/initTransaction">
+        <input type="hidden" name="token_ws" value="01ab5f783f70099da54797e08bc1a3099465d14406279b5a8ab12b766f327241">
+        <p>Redirigiendo a Webpay, por favor espera...</p>
+        <p><input type="submit" value="Continuar a Webpay (si no es automático)"></p>
+    </form>
+</body>
+</html>
