@@ -1,10 +1,8 @@
 package com.tutorial.crud.controller;
 
-import com.tutorial.crud.entity.Rol;
-import com.tutorial.crud.entity.Usuario;
-import com.tutorial.crud.enums.RolNombre;
-import com.tutorial.crud.service.RolService;
-import com.tutorial.crud.service.UsuarioService;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,8 +12,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashSet;
-import java.util.Set;
+import com.tutorial.crud.entity.Rol;
+import com.tutorial.crud.entity.Usuario;
+import com.tutorial.crud.enums.RolNombre;
+import com.tutorial.crud.service.RolService;
+import com.tutorial.crud.service.UsuarioService;
 
 @Controller
 @RequestMapping("/usuario")
@@ -62,7 +63,7 @@ public class UsuarioController {
         usuario.setRoles(roles);
         usuarioService.save(usuario);
         mv.setViewName("/login");
-        mv.addObject("registroOK", "Cuenta creada, " + usuario.getNombreUsuario() + ", ya puedes iniciar sesión");
+        mv.addObject("registroOK", "Cuenta creada, ya puedes iniciar sesión");
         return mv;
     }
 
