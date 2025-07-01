@@ -1,0 +1,8 @@
+Create admin
+import com.tutorial.crud.entity.Rol;
+import com.tutorial.crud.entity.Usuario;
+import com.tutorial.crud.enums.RolNombre;
+
+Create ROles
+import com.tutorial.crud.entity.Rol;
+import com.tutorial.crud.enums.RolNombre;

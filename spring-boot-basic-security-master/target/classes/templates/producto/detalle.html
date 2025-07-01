@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="fragments :: headerfiles">
+    <title>Detalle del Producto</title>
+</head>
+<body>
+<header th:insert="fragments :: nav"></header>
+
+<div class="container mt-4 mb-5">
+    <div class="card">
+        <div class="card-header text-center">
+            Detalles del Producto
+        </div>
+
+        <div class="card-body">
+            <form th:action="@{/cart}" method="post">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+
+                <input type="hidden" name="id" th:value="${producto.id}" />
+
+                <h5 class="card-title" th:text="'Nombre: ' + ${producto.nombre}">Nombre</h5>
+                <p class="card-text" th:text="'Precio: $' + ${producto.precio}">Precio</p>
+
+                <p class="text-justify">
+                    <strong>Descripción: </strong>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+                </p>
+
+                <div class="form-group">
+                    <label for="cantidad"><strong>Cantidad:</strong></label>
+                    <input type="number" class="form-control" id="cantidad" name="cantidad"
+                           autocomplete="off" min="1" max="5" value="1" required />
+                </div>
+
+                <div class="mt-4">
+                    <button type="submit" class="btn btn-dark">Añadir al carrito</button>
+                    <a th:href="@{/producto/lista}" class="btn btn-outline-info">
+                        <i class="fas fa-arrow-circle-left"></i> Volver
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer th:insert="fragments :: footer"></footer>
+<div th:insert="fragments :: scripts"></div>
+
+</body>
+</html>
