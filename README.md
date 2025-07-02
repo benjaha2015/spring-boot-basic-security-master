@@ -4,6 +4,7 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
 - Carrito de compras
 - Conversión visual de divisas
 - Pago seguro con Webpay Plus
+- Gestión de productos y usuarios
 
 ---
 
@@ -15,6 +16,9 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
   - [Carrito de Compras](#carrito-de-compras)
   - [Conversión de Divisas](#conversión-de-divisas)
   - [Pago con Webpay Plus](#pago-con-webpay-plus)
+  - [Gestión de Productos](#gestión-de-productos)
+  - [Gestión de Usuarios](#gestión-de-usuarios)
+  - [Home y Seguridad](#home-y-seguridad)
 - [Notas](#notas)
 - [Licencia](#licencia)
 
@@ -43,7 +47,7 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
 ---
 
 ## Estructura de Carpetas
-- `src/main/java/com/tutorial/crud/controller/` - Controladores de la aplicación (Carrito, Webpay, etc.)
+- `src/main/java/com/tutorial/crud/controller/` - Controladores de la aplicación (Carrito, Webpay, Producto, Usuario, etc.)
 - `src/main/resources/templates/producto/` - Vistas Thymeleaf (carrito, pago, confirmación, etc.)
 - `src/main/resources/application.properties` - Configuración de la aplicación
 
@@ -52,16 +56,12 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
 ## Principales Endpoints y Funcionalidades
 
 ### Carrito de Compras
-
 - **GET `/cart`**  
   Muestra el carrito de compras actual del usuario.
 - **POST `/cart`**  
   Agrega un producto al carrito.
 - **GET `/cart/delete/{id}`**  
   Elimina un producto del carrito.
-
-#### Conversión de Divisas
-
 - **GET `/cart/convertir-divisa?moneda=CLP|USD|EUR`**  
   Devuelve los precios del carrito y el total convertidos a la moneda seleccionada.  
   - **Parámetro:**  
@@ -84,7 +84,8 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
   - **Nota:** El cambio de divisa es solo visual. El pago siempre se realiza en pesos chilenos (CLP).
 
 ### Pago con Webpay Plus
-
+- **GET `/webpay`**  
+  Muestra la página de inicio de pago Webpay.
 - **POST `/webpay/create`**  
   Inicia una transacción Webpay Plus.  
   - **Parámetros:**  
@@ -93,7 +94,6 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
     - `amount`: Monto en CLP
   - **Respuesta:**  
     Redirige automáticamente a Webpay para completar el pago.
-
 - **POST `/webpay/return`**  
   Endpoint de retorno de Webpay.  
   - **Parámetro:**  
@@ -101,6 +101,36 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
   - **Funcionalidad:**  
     - Valida la transacción y muestra una página de confirmación de compra (`compra.html`).
     - Si ocurre un error, muestra una página de error.
+
+### Gestión de Productos
+- **GET `/producto/lista`**  
+  Lista todos los productos disponibles.
+- **GET `/producto/nuevo`**  
+  Muestra el formulario para crear un nuevo producto.
+- **POST `/producto/guardar`**  
+  Guarda un nuevo producto.
+- **GET `/producto/detalle/{id}`**  
+  Muestra el detalle de un producto.
+- **GET `/producto/editar/{id}`**  
+  Muestra el formulario para editar un producto.
+- **POST `/producto/actualizar`**  
+  Actualiza un producto existente.
+- **GET `/producto/borrar/{id}`**  
+  Elimina un producto.
+
+### Gestión de Usuarios
+- **GET `/usuario/registro`**  
+  Muestra el formulario de registro de usuario.
+- **POST `/usuario/registrar`**  
+  Registra un nuevo usuario.
+
+### Home y Seguridad
+- **GET `/`** o **GET `/index`**  
+  Página principal de la tienda.
+- **GET `/login`**  
+  Página de inicio de sesión.
+- **GET `/forbidden`**  
+  Página de acceso denegado.
 
 ---
 
