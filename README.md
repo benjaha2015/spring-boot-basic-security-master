@@ -36,12 +36,13 @@ Este proyecto es una tienda online desarrollada en Spring Boot, que incluye:
 2. Configura las credenciales de Webpay Plus de integración:
     ```properties
     transbank.commerceCode=597055555532
-    transbank.apiKey=020c13fa6a994bfaaf3c0b1c6a2a1a2a
+    transbank.apiKey=579B532A7440BB0C9079DED94D31EA1615BACEB56610332264630D42D0A36B1C
     transbank.environment=INTEGRATION
     ```
 3. Ejecuta la aplicación con:
     ```
     mvn spring-boot:run
+    o usando la extension de visual studio code de spring boot, teniendo activo la base de datos con la database necesaria 
     ```
 
 ---
