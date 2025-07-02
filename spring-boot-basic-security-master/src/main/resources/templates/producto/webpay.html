@@ -1,14 +1,24 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Redirigiendo a Webpay...</title>
 </head>
-<body onload="document.webpayForm.submit();">
-    <form name="webpayForm" method="POST" action="https://webpay3gint.transbank.cl/webpayserver/initTransaction">
-        <input type="hidden" name="token_ws" value="01ab5f783f70099da54797e08bc1a3099465d14406279b5a8ab12b766f327241">
-        <p>Redirigiendo a Webpay, por favor espera...</p>
-        <p><input type="submit" value="Continuar a Webpay (si no es automático)"></p>
-    </form>
+<body>
+    <div th:if="${token != null}">
+        <form name="webpayForm" method="POST" action="https://webpay3gint.transbank.cl/webpayserver/initTransaction">
+            <input type="hidden" name="token_ws" th:value="${token}">
+            <p>Redirigiendo a Webpay, por favor espera...</p>
+            <p><input type="submit" value="Continuar a Webpay (si no es automático)"></p>
+        </form>
+        <script>
+            document.webpayForm.submit();
+        </script>
+    </div>
+    <div th:if="${token == null}">
+        <h2 style="color:red;">Ocurrió un error al generar la transacción Webpay.</h2>
+        <p th:if="${error != null}" th:text="${error}"></p>
+        <a href="/producto/carrito">Volver al carrito</a>
+    </div>
 </body>
 </html>

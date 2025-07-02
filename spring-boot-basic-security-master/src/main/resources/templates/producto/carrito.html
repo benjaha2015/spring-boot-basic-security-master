@@ -13,7 +13,7 @@
 
 <div class="container">
     <h1 class="mt-4 mb-3">
-        Spring eCommerce <small>Carrito</small>
+        Ferremas <small>Carrito</small>
     </h1>
 
     <ol class="breadcrumb">
@@ -50,8 +50,16 @@
                 <div class="col-lg-3">
                     <h2 class="card-title">SUBTOTAL</h2>
                     <ul class="list-group">
-                        <li class="list-group-item"><h5 th:text=" 'S/ ' + ${orden.total}"></h5></li>
-                        <a th:href="@{/guardar-orden}" class="btn btn-dark">Ver Orden</a>
+                        <li class="list-group-item"><h5 th:text=" '$' + ${orden.total}"></h5></li>
+                        <form th:action="@{/webpay/create}" method="post">
+                        <input type="hidden" id="buyOrder" name="buyOrder" th:value="${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')}">
+                        <input type="hidden" id="sessionId" name="sessionId" th:value="${#dates.format(#dates.createNow(), 'yyyyMMddHHmmssSSS')}">
+                            <input type="hidden" id="amount" name="amount" th:value="${orden.total}">
+                            <button type="submit" class="btn btn-dark">Pagar</button>
+                            
+
+                        </form>
+                        <a class="dropdown-item" th:href="@{/webpay}">pagina webpay</a>
                     </ul>
                 </div>
             </div>
