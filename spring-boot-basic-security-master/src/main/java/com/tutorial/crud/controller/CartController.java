@@ -1,7 +1,9 @@
 package com.tutorial.crud.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.tutorial.crud.entity.DetalleOrden;
 import com.tutorial.crud.entity.Orden;
@@ -145,4 +148,59 @@ public class CartController {
     
     // El método saveOrder() no se toca, pero asegúrate de que use la sesión
     // si necesitas limpiarla al final.
+
+
+@GetMapping("/convertir-divisa")
+@ResponseBody
+public Map<String, Object> convertirDivisa(
+        @RequestParam(defaultValue = "CLP") String moneda,
+        HttpSession session) {
+    List<DetalleOrden> detalles = getDetallesFromSession(session);
+    Orden orden = getOrdenFromSession(session);
+
+    double tasa = 1.0;
+    String simbolo = "$";
+    switch (moneda) {
+        case "USD":
+            tasa = 925.0; // Ejemplo: 1 USD = 925 CLP
+            simbolo = "US$ ";
+            break;
+        case "EUR":
+            tasa = 1000.0; // Ejemplo: 1 EUR = 1000 CLP
+            simbolo = "€ ";
+            break;
+        default:
+            tasa = 1.0;
+            simbolo = "$";
+    }
+
+    List<Map<String, Object>> detallesConvertidos = new ArrayList<>();
+    for (DetalleOrden d : detalles) {
+        Map<String, Object> det = new HashMap<>();
+        double precio = d.getPrecio();
+        double total = d.getTotal();
+        if (!"CLP".equals(moneda)) {
+            precio = precio / tasa;
+            total = total / tasa;
+        }
+        det.put("nombre", d.getNombre());
+        det.put("precio", String.format("%s%.2f", simbolo, precio));
+        det.put("cantidad", d.getCantidad());
+        det.put("total", String.format("%s%.2f", simbolo, total));
+        detallesConvertidos.add(det);
+    }
+
+    double totalOrden = orden.getTotal();
+    if (!"CLP".equals(moneda)) {
+        totalOrden = totalOrden / tasa;
+    }
+
+    Map<String, Object> result = new HashMap<>();
+    result.put("detalles", detallesConvertidos);
+    result.put("total", String.format("%.2f", totalOrden));
+    result.put("simbolo", simbolo);
+    return result;
+}
+
+
 }

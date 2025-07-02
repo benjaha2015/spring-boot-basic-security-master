@@ -18,6 +18,7 @@
 
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a th:href="@{/}">Home</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/producto/lista}">Productos</a></li>
         <li class="breadcrumb-item active">Carrito</li>
     </ol>
 
@@ -49,17 +50,26 @@
 
                 <div class="col-lg-3">
                     <h2 class="card-title">SUBTOTAL</h2>
+<label for="selectDivisa">Mostrar precios en:</label>
+<select id="selectDivisa" class="form-select form-select-sm" style="width:auto; display:inline-block;">
+    <option value="CLP">Pesos chilenos (CLP)</option>
+    <option value="USD">Dólares (USD)</option>
+    <option value="EUR">Euros (EUR)</option>
+</select>
                     <ul class="list-group">
                         <li class="list-group-item"><h5 th:text=" '$' + ${orden.total}"></h5></li>
                         <form th:action="@{/webpay/create}" method="post">
                         <input type="hidden" id="buyOrder" name="buyOrder" th:value="${#dates.format(#dates.createNow(), 'yyyyMMddHHmmss')}">
                         <input type="hidden" id="sessionId" name="sessionId" th:value="${#dates.format(#dates.createNow(), 'yyyyMMddHHmmssSSS')}">
                             <input type="hidden" id="amount" name="amount" th:value="${orden.total}">
+                            <small id="mensajeDivisa" style="display:none; color: #888;">
+        El cambio de divisa es solo visual. El pago se realizará en pesos chilenos (CLP).
+        </small>
                             <button type="submit" class="btn btn-dark">Pagar</button>
                             
 
                         </form>
-                        <a class="dropdown-item" th:href="@{/webpay}">pagina webpay</a>
+                                <a class="btn btn-primary btn-lg" th:href="@{/producto/lista}" role="button">Seguir comprando</a>
                     </ul>
                 </div>
             </div>
@@ -70,7 +80,33 @@
 
 <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 <script th:src="@{/vendor/bootstrap/js/bootstrap.bundle.min.js}"></script>
+<script>
+const selectDivisa = document.getElementById('selectDivisa');
+const mensajeDivisa = document.getElementById('mensajeDivisa');
 
+selectDivisa.addEventListener('change', function() {
+    const moneda = this.value;
+    if (moneda === 'CLP') {
+        mensajeDivisa.style.display = 'none';
+        fetch('/cart/convertir-divisa?moneda=CLP')
+            .then(res => res.json())
+            .then(data => actualizarTablaCarrito(data));
+    } else {
+        mensajeDivisa.style.display = 'inline';
+        fetch('/cart/convertir-divisa?moneda=' + moneda)
+            .then(res => res.json())
+            .then(data => actualizarTablaCarrito(data));
+    }
+});
+
+function actualizarTablaCarrito(data) {
+    document.querySelectorAll('tr[th\\:each="dorden:${cart}"]').forEach((row, idx) => {
+        row.children[1].textContent = data.detalles[idx].precio; // precio
+        row.children[3].textContent = data.detalles[idx].total;  // total
+    });
+    document.querySelector('li.list-group-item h5').textContent = data.simbolo + data.total;
+}
+</script>
 </body>
 
 </html>

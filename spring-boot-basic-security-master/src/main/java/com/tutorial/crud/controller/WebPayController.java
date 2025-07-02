@@ -14,6 +14,7 @@ import cl.transbank.webpay.webpayplus.WebpayPlus.Transaction;
 import cl.transbank.webpay.webpayplus.responses.WebpayPlusTransactionCreateResponse;
 
 
+
 @Controller
 @RequestMapping("/webpay")
 public class WebPayController {
@@ -73,5 +74,13 @@ WebpayPlusTransactionCreateResponse response = transaction.create(
         model.addAttribute("error", e.getMessage());
         return "producto/webpay";
     }
-}}
+}
+
+@GetMapping("/return")
+public String mostrarcompraexitosa() {
+    return  "producto/compra"; // Nombre del HTML de confirmación
+}
+
+
+}
 // 
